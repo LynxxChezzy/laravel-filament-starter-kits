@@ -25,7 +25,7 @@ Setelah proses clone selesai, masuk ke dalam `direktori/folder` dengan perintah:
 cd laravel-filament-starter-kits
 ```
 Anda sekarang berada di dalam folder proyek tersebut.  
-Masuk ke `VS Code` dengan perintah:
+Masuk ke `VS Code` menggunakan perintah:
 ```bash
 code .
 ```
