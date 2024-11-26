@@ -93,8 +93,8 @@ php artisan migrate
 php artisan db:seed --class=UserRolePermissionSeeder
 php artisan serve
 ```
-`php artisan migrate` perintah untuk membuat `tabel` secara otomatis melalui `migrations`.
-`php artisan db:seed --class=UserRolePermissionSeeder` perintah untuk membuat data `User`, `Role`, serta `Permission` agar aplikasi bisa diakses.
+`php artisan migrate` perintah untuk membuat `tabel` secara otomatis melalui `migrations`.  
+`php artisan db:seed --class=UserRolePermissionSeeder` perintah untuk membuat data `User`, `Role`, serta `Permission` agar aplikasi bisa diakses.  
 `php artisan serve` perintah untuk menjalankan server lokal atau aplikasi laravel.
 
 ### Akses Filament Admin Panel
