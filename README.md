@@ -48,6 +48,7 @@ Konfigurasi Nama Aplikasi:
 APP_NAME="Laravel Filament"
 ```
 Sesuaikan dengan `nama aplikasi` yang ingin anda buat.  
+
 Konfigurasi URL Aplikasi:
 ```php
 APP_URL=http://127.0.0.1:8000
