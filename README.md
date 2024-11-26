@@ -35,10 +35,10 @@ npm install
 cp .env.example .env
 php artisan key:generate
 ```
-`composer install` Ini akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `composer.json`.
-`npm install` Ini akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `package.json`.
-`cp .env.example .env` Ini akan  menyalin file `.env.example` menjadi `.env` untuk konfigurasi aplikasi.
-`php artisan key:generate` ini akan menghasilkan key unik untuk enkripsi data Laravel dan otomatis menambahkannya ke file `.env`.
+`composer install` Ini akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `composer.json`.  
+`npm install` Ini akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `package.json`.  
+`cp .env.example .env` Ini akan  menyalin file `.env.example` menjadi `.env` untuk konfigurasi aplikasi.  
+`php artisan key:generate` ini akan menghasilkan key unik untuk enkripsi data Laravel dan otomatis menambahkannya ke file `.env`.  
 
 ### Konfigurasi `.env`
 Buka file `.env` dan sesuaikan pengaturan koneksi basis data dan lainnya sesuai dengan konfigurasi basis data yang Anda gunakan sebagai contoh:
