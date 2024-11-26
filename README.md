@@ -24,7 +24,12 @@ Setelah proses clone selesai, masuk ke dalam `direktori/folder` dengan perintah:
 ```bash
 cd laravel-filament-starter-kits
 ```
-Anda sekarang berada di dalam folder proyek tersebut, dan siap untuk melakukan konfigurasi lebih lanjut.
+Anda sekarang berada di dalam folder proyek tersebut.  
+Masuk ke `VS Code` dengan perintah:
+```bash
+code .
+```
+Sekarang anda siap untuk melakukan konfigurasi lebih lanjut.
 
 ### Instalasi Package/Dependensi
 Laravel menggunakan Composer dan Node untuk mengelola dependensi. Jalankan perintah berikut di terminal Anda untuk menginstal semua dependensi dan mengonfigurasi aplikasi Laravel secara otomatis:
