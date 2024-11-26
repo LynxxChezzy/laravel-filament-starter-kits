@@ -84,7 +84,7 @@ DB_DATABASE=starter-kits
 DB_USERNAME=root
 DB_PASSWORD=
 ```
-Sesuaikan dengan nama database yang ingin anda buat.  
+Pada bagian `DB_DATABASE` sesuaikan dengan `nama database` yang ingin anda buat.  
 
 ### Migrasi Database dan Seed Data
 Setelah mengonfigurasi `.env` serta basis data, jalankan perintah berikut untuk membuat `tabel`, lalu memasukkan data `User`, `Role`, dan `Permission` agar aplikasi dapat langsung digunakan:
