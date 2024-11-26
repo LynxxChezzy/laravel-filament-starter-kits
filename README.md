@@ -47,18 +47,18 @@ Konfigurasi Nama Aplikasi:
 ```php
 APP_NAME="Laravel Filament"
 ```
-Sesuaikan dengan `nama aplikasi` yang ingin anda buat.
+Sesuaikan dengan `nama aplikasi` yang ingin anda buat.  
 Konfigurasi URL Aplikasi:
 ```php
 APP_URL=http://127.0.0.1:8000
 ```
-Wajib menggunakan `http://127.0.0.1:8000` untuk filament atau aplikasi tidak akan bisa jalan.
+Wajib menggunakan `http://127.0.0.1:8000` untuk filament atau aplikasi tidak akan bisa jalan.  
 
 Konfigurasi Waktu Local:
 ```php
 APP_TIMEZONE="Asia/Jakarta" 
 ```
-Sesuaikan dengan `waktu local` anda.
+Sesuaikan dengan `waktu local` anda.  
 
 Konfigurasi Bahasa:
 ```php
@@ -66,7 +66,7 @@ APP_LOCALE=id
 APP_FALLBACK_LOCALE=id
 APP_FAKER_LOCALE=id_ID
 ```
-Sesuaikan dengan `kode Negara` anda.
+Sesuaikan dengan `kode Negara` anda.  
 
 Konfigurasi Basis data:
 ```php
@@ -77,7 +77,7 @@ DB_DATABASE=starter-kits
 DB_USERNAME=root
 DB_PASSWORD=
 ```
-Sesuaikan dengan nama database yang ingin anda buat.
+Sesuaikan dengan nama database yang ingin anda buat.  
 
 ### Migrasi Database dan Seed Data
 Setelah mengonfigurasi `.env` serta basis data, jalankan perintah berikut untuk membuat `tabel`, lalu memasukkan data `User`, `Role`, dan `Permission` agar aplikasi dapat langsung digunakan:
