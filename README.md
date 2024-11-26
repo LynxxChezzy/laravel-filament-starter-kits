@@ -26,7 +26,7 @@ cd laravel-filament-starter-kits
 ```
 Anda sekarang berada di dalam folder proyek tersebut, dan siap untuk melakukan konfigurasi lebih lanjut.
 
-### Instalasi Dependensi
+### Instalasi Package/Dependensi
 Laravel menggunakan Composer dan Node untuk mengelola dependensi. Jalankan perintah berikut di terminal Anda untuk menginstal semua dependensi dan mengonfigurasi aplikasi Laravel secara otomatis:
 
 ```bash
