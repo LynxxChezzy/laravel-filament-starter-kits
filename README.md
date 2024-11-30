@@ -9,7 +9,7 @@
 
 ## (ID) Langkah Instalasi
 
-### Note (Opsional)
+### Harap Diperhatikan
 Sebelum melakukan instalasi di wajibkan menggunakan PHP versi 3.3 keatas, silahkan unduh melalui link berikut:  
 ```bash
 https://windows.php.net/downloads/releases/php-8.4.1-Win32-vs17-x64.zip
@@ -50,7 +50,7 @@ php artisan storage:link
 `composer install` : Akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `composer.json`.  
 `npm install` : Akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `package.json`.  
 `cp .env.example .env` : Akan  menyalin file `.env.example` menjadi `.env` untuk konfigurasi aplikasi.  
-`php artisan key:generate` : Akan menghasilkan key unik untuk enkripsi data Laravel dan otomatis menambahkannya ke file `.env`. 
+`php artisan key:generate` : Akan menghasilkan key unik untuk enkripsi data Laravel dan otomatis menambahkannya ke file `.env`.  
 `php artisan storage:link` : Akan membuat tautan antara direktori publik `public/storage` dengan penyimpanan file aplikasi `storage/app/public`.  
 
 ### Konfigurasi `.env`
