@@ -9,11 +9,14 @@
 
 ## (ID) Langkah Instalasi
 
+### Note (Opsional)
+Sebelum melakukan instalasi di wajibkan menggunakan PHP versi 3.3 keatas, silahkan unduh melalui link berikut:  
+```bash
+https://windows.php.net/downloads/releases/php-8.4.1-Win32-vs17-x64.zip
+```
+Jika sudah silahkan modifikasi file `php.ini` kemudian cari `;extension=zip` lalu hilang kan tanda `;`, sehingga menjadi `extension=zip`.  
+
 ### Clone Repositori dari GitHub
-
-sebelum melakukan instalasi di wajibkan menggunakan PHP versi 3.3 keatas, silahkan unduh melalui link berikut:  
-`https://windows.php.net/downloads/releases/php-8.4.1-Win32-vs17-x64.zip`
-
 Jalankan perintah berikut untuk meng-clone repositori starter kit dari GitHub ke lokal Anda.
 ```bash
 git clone https://github.com/ZanQuenChezzyy/laravel-filament-starter-kits.git
@@ -42,11 +45,13 @@ composer install
 npm install
 cp .env.example .env
 php artisan key:generate
+php artisan storage:link
 ```
-`composer install` Ini akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `composer.json`.  
-`npm install` Ini akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `package.json`.  
-`cp .env.example .env` Ini akan  menyalin file `.env.example` menjadi `.env` untuk konfigurasi aplikasi.  
-`php artisan key:generate` ini akan menghasilkan key unik untuk enkripsi data Laravel dan otomatis menambahkannya ke file `.env`.  
+`composer install` : Akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `composer.json`.  
+`npm install` : Akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `package.json`.  
+`cp .env.example .env` : Akan  menyalin file `.env.example` menjadi `.env` untuk konfigurasi aplikasi.  
+`php artisan key:generate` : Akan menghasilkan key unik untuk enkripsi data Laravel dan otomatis menambahkannya ke file `.env`. 
+`php artisan storage:link` : Akan membuat tautan antara direktori publik `public/storage` dengan penyimpanan file aplikasi `storage/app/public`.  
 
 ### Konfigurasi `.env`
 Buka file `.env` dan sesuaikan pengaturan koneksi basis data dan lainnya sesuai dengan konfigurasi basis data yang Anda gunakan sebagai contoh:

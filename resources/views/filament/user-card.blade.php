@@ -13,6 +13,16 @@
                 </h3>
                 <p class="text-gray-400 text-xs">{{ Auth::user()->roles->first()->name ?? 'No Role Assigned' }}</p>
             </div>
+            {{-- <div class="flex items-end ml-auto">
+                <form action="{{ filament()->getLogoutUrl() }}" method="post" class="my-auto">
+                    @csrf
+
+                    <x-filament::button class="flex items-center justify-center p-2 rounded-md" color="gray"
+                        tag="button" type="submit">
+                        <x-heroicon-m-arrow-left-on-rectangle class="w-5 h-5" color="gray" />
+                    </x-filament::button>
+                </form>
+            </div> --}}
         </div>
     </div>
 </div>

@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -57,6 +58,19 @@ class UserResource extends Resource
                     ->preload()
                     ->searchable()
                     ->required(),
+
+                FileUpload::make('avatar_url')
+                    ->label('Photo Profil')
+                    ->image()
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        '1:1',
+                    ])
+                    ->imageCropAspectRatio('1:1')
+                    ->circleCropper()
+                    ->directory('avatar_upload')
+                    ->visibility('public')
+                    ->columnSpanFull(),
             ]);
     }
 
