@@ -11,8 +11,10 @@
 
 ### Clone Repositori dari GitHub
 
-Jalankan perintah berikut untuk meng-clone repositori starter kit dari GitHub ke lokal Anda.
+sebelum melakukan instalasi di wajibkan menggunakan PHP versi 3.3 keatas, silahkan unduh melalui link berikut:  
+`https://windows.php.net/downloads/releases/php-8.4.1-Win32-vs17-x64.zip`
 
+Jalankan perintah berikut untuk meng-clone repositori starter kit dari GitHub ke lokal Anda.
 ```bash
 git clone https://github.com/ZanQuenChezzyy/laravel-filament-starter-kits.git
 ```
@@ -55,17 +57,17 @@ APP_NAME="Laravel Filament"
 ```
 Sesuaikan dengan `nama aplikasi` yang ingin anda buat.  
 
-Konfigurasi URL Aplikasi:
-```php
-APP_URL=http://127.0.0.1:8000
-```
-Wajib menggunakan `http://127.0.0.1:8000` untuk filament atau aplikasi tidak akan bisa jalan.  
-
 Konfigurasi Waktu Local:
 ```php
 APP_TIMEZONE="Asia/Jakarta" 
 ```
 Sesuaikan dengan `waktu local` anda.  
+
+Konfigurasi URL Aplikasi:
+```php
+APP_URL=http://127.0.0.1:8000
+```
+Wajib menggunakan `http://127.0.0.1:8000` untuk filament atau aplikasi tidak akan bisa jalan.  
 
 Konfigurasi Bahasa:
 ```php
