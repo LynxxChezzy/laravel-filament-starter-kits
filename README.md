@@ -12,7 +12,7 @@
 ### Harap Diperhatikan
 Sebelum melakukan instalasi di wajibkan menggunakan PHP versi 3.3 keatas, jika PHP anda belum sesuai silahkan unduh melalui link berikut:  
 ```bash
-https://windows.php.net/downloads/releases/php-8.4.1-Win32-vs17-x64.zip
+https://windows.php.net/downloads/releases/php-8.3.14-nts-Win32-vs16-x64.zip
 ```
 Jika sudah silahkan modifikasi file `php.ini` kemudian cari `;extension=zip` lalu hilang kan tanda `;`, sehingga menjadi `extension=zip`.  
 
