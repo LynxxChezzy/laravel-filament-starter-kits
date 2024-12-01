@@ -7,6 +7,8 @@ use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -26,35 +28,35 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->label('Nama Pengguna')
                     ->placeholder('Masukkan Nama Pengguna')
                     ->minLength(3)
                     ->maxLength(255)
                     ->required(),
 
-                Forms\Components\TextInput::make('email')
+                TextInput::make('email')
                     ->label('Email Pengguna')
                     ->placeholder('Masukkan Email Pengguna')
                     ->email()
                     ->required()
                     ->maxLength(255),
 
-                Forms\Components\TextInput::make('password')
-                    ->label(fn($context) => $context === 'create' ? 'Password Pengguna' : 'Ubah Password') // Kondisi untuk label
-                    ->placeholder(fn($context) => $context === 'create' ? 'Masukkan Password Pengguna' : 'Kosongkan jika tidak ingin mengubah password') // Kondisi untuk placeholder
+                TextInput::make('password')
+                    ->label(fn($context) => $context === 'create' ? 'Password Pengguna' : 'Ubah Password')
+                    ->placeholder(fn($context) => $context === 'create' ? 'Masukkan Password Pengguna' : 'Kosongkan jika tidak ingin mengubah password')
                     ->password()
-                    ->required(fn(string $context) => $context === 'create') // Wajib hanya pada pembuatan
+                    ->required(fn(string $context) => $context === 'create')
                     ->maxLength(255)
                     ->dehydrateStateUsing(fn($state) => $state ? bcrypt($state) : null)
                     ->dehydrated(fn($state) => filled($state)),
 
 
-                Forms\Components\Select::make('roles')
+                Select::make('roles')
                     ->label('Level Pengguna')
                     ->placeholder('Pilih Level Pengguna')
-                    ->relationship('roles', 'name') // Menggunakan relationship dari Spatie
-                    ->native(false) // Karena pengguna dapat memiliki banyak peran
+                    ->relationship('roles', 'name')
+                    ->native(false)
                     ->preload()
                     ->searchable()
                     ->required(),
@@ -67,7 +69,6 @@ class UserResource extends Resource
                         '1:1',
                     ])
                     ->imageCropAspectRatio('1:1')
-                    ->circleCropper()
                     ->directory('avatar_upload')
                     ->visibility('public')
                     ->columnSpanFull(),
@@ -79,11 +80,23 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Nama Pengguna')
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('email')
-                    ->label('Email Pengguna')
+                    ->label('Pengguna')
+                    ->formatStateUsing(function (User $record) {
+                        $nameParts = explode(' ', trim($record->name));
+                        $initials = isset($nameParts[1])
+                            ? strtoupper(substr($nameParts[0], 0, 1) . substr($nameParts[1], 0, 1))
+                            : strtoupper(substr($nameParts[0], 0, 1));
+                        $avatarUrl = $record->avatar_url
+                            ? asset('storage/' . $record->avatar_url)
+                            : 'https://ui-avatars.com/api/?name=' . $initials . '&background=000000&color=ffffff&size=128';
+                        $image = '<img src="' . $avatarUrl . '" alt="Avatar User" class="w-10 h-10 rounded-lg mr-2.5">';
+                        $nama = '<strong>' . e($record->name) . '</strong>';
+                        $email = e($record->email);
+                        return '<div class="flex items-center">'
+                            . $image
+                            . '<div>' . $nama . '<br>' . $email . '</div></div>';
+                    })
+                    ->html()
                     ->searchable(),
             ])
             ->filters([

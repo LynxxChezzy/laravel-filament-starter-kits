@@ -38,5 +38,10 @@ class AppServiceProvider extends ServiceProvider
             PanelsRenderHook::SIDEBAR_NAV_START,
             fn(): View => view('filament.user-card')
         );
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::FOOTER,
+            fn(): View => view('filament.footer')
+        );
     }
 }
