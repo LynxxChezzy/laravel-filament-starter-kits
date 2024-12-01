@@ -6,9 +6,17 @@ use App\Filament\Resources\RoleResource\Pages;
 use App\Filament\Resources\RoleResource\RelationManagers;
 use App\Models\Role;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -25,7 +33,7 @@ class RoleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->label('Nama Level')
                     ->placeholder('Masukkan Nama Level Pengguna')
                     ->required()
@@ -38,7 +46,7 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label('Nama Level')
                     ->searchable(),
             ])
@@ -46,27 +54,31 @@ class RoleResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
-                    ->authorize(function ($record) {
-                        // Pastikan bahwa user tidak bisa menghapus role dirinya sendiri
-                        return Auth::id() !== $record->id; // Jika ini untuk role, ganti dengan kondisi role
-                    })
-                    ->using(function ($record) {
-                        // Pastikan role yang sedang dipilih bukan role pengguna yang sedang login
-                        if (Auth::user()->hasRole($record->name)) {
-                            session()->flash('error', 'You cannot delete your own role.');
-                            return false; // Mencegah penghapusan role
-                        }
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make()
+                        ->authorize(function ($record) {
+                            // Pastikan bahwa user tidak bisa menghapus role dirinya sendiri
+                            return Auth::id() !== $record->id; // Jika ini untuk role, ganti dengan kondisi role
+                        })
+                        ->using(function ($record) {
+                            // Pastikan role yang sedang dipilih bukan role pengguna yang sedang login
+                            if (Auth::user()->hasRole($record->name)) {
+                                session()->flash('error', 'You cannot delete your own role.');
+                                return false; // Mencegah penghapusan role
+                            }
 
-                        $record->delete(); // Lanjutkan penghapusan role jika bukan role yang sedang login
-                    })
-                    ->requiresConfirmation(),
+                            $record->delete(); // Lanjutkan penghapusan role jika bukan role yang sedang login
+                        })
+                        ->requiresConfirmation(),
+                ])->icon('heroicon-m-ellipsis-horizontal')
+                    ->color('info')
+                    ->tooltip('Aksi')
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
                         ->using(function ($records) {
                             // Filter keluar role yang digunakan oleh pengguna yang sedang login
                             $rolesToDelete = $records->reject(function ($record) {

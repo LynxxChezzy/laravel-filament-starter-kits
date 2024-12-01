@@ -5,6 +5,9 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -12,6 +15,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -88,10 +94,10 @@ class UserResource extends Resource
                             : strtoupper(substr($nameParts[0], 0, 1));
                         $avatarUrl = $record->avatar_url
                             ? asset('storage/' . $record->avatar_url)
-                            : 'https://ui-avatars.com/api/?name=' . $initials . '&background=000000&color=ffffff&size=128';
-                        $image = '<img src="' . $avatarUrl . '" alt="Avatar User" class="w-10 h-10 rounded-lg mr-2.5">';
-                        $nama = '<strong>' . e($record->name) . '</strong>';
-                        $email = e($record->email);
+                            : 'https://ui-avatars.com/api/?name=' . $initials . '&amp;color=FFFFFF&amp;background=030712';
+                        $image = '<img class="w-10 h-10 rounded-lg mr-2.5" src="' . $avatarUrl . '" alt="Avatar User">';
+                        $nama = '<strong class="text-sm text-gray-800 font-medium">' . e($record->name) . '</strong>';
+                        $email = '<span class="text-gray-300 font-light">' . e($record->email) . '</span>';
                         return '<div class="flex items-center">'
                             . $image
                             . '<div>' . $nama . '<br>' . $email . '</div></div>';
@@ -103,26 +109,31 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
-                    ->authorize(function ($record) {
-                        // Pastikan bahwa user tidak bisa menghapus dirinya sendiri
-                        return Auth::id() !== $record->id;
-                    })
-                    ->using(function ($record) {
-                        if ($record->id === Auth::id()) {
-                            session()->flash('error', 'You cannot delete your own account.');
-                            return false; // Prevent deletion
-                        }
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make()
+                        ->authorize(function ($record) {
+                            // Pastikan bahwa user tidak bisa menghapus dirinya sendiri
+                            return Auth::id() !== $record->id;
+                        })
+                        ->using(function ($record) {
+                            if ($record->id === Auth::id()) {
+                                session()->flash('error', 'You cannot delete your own account.');
+                                return false; // Prevent deletion
+                            }
 
-                        $record->delete(); // Proceed with deletion
-                    })
-                    ->requiresConfirmation(),
+                            $record->delete(); // Proceed with deletion
+                        })
+                        ->requiresConfirmation(),
+                ])
+                    ->icon('heroicon-m-ellipsis-horizontal')
+                    ->color('info')
+                    ->tooltip('Aksi')
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
                         ->using(function ($records) {
                             // Filter out the logged-in user's record from the selected records
                             $recordsToDelete = $records->reject(function ($record) {

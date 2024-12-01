@@ -6,7 +6,9 @@
                 'user' => filament()->auth()->user(),
             ])
 
-            <x-filament::avatar :src="filament()->getUserAvatarUrl($user)" :alt="__('filament-panels::layout.avatar.alt', ['name' => filament()->getUserName($user)])" :attributes="\Filament\Support\prepare_inherited_attributes($attributes)->class(['fi-user-avatar'])" />
+            <x-filament::avatar :src="filament()->getUserAvatarUrl($user)" :alt="__('filament-panels::layout.avatar.alt', ['name' => filament()->getUserName($user)])" :attributes="\Filament\Support\prepare_inherited_attributes($attributes)->class([
+                'fi-user-avatar rounded-lg',
+            ])" />
             <div class="w-fit transition-all transform duration-500">
                 <h3 class="text-gray-600 dark:text-gray-200 font-bold text-xs">
                     {{ Auth::user()->name }}
