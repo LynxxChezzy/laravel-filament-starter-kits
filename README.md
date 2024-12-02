@@ -58,32 +58,6 @@ npm run build
 ### Konfigurasi `.env`
 Buka file `.env` dan sesuaikan pengaturan koneksi basis data dan lainnya sesuai dengan konfigurasi basis data yang Anda gunakan sebagai contoh:
 
-Konfigurasi Nama Aplikasi:
-```php
-APP_NAME="Laravel Filament"
-```
-Sesuaikan dengan `nama aplikasi` yang ingin anda buat.  
-
-Konfigurasi Waktu Local:
-```php
-APP_TIMEZONE="Asia/Jakarta" 
-```
-Sesuaikan dengan `waktu local` anda.  
-
-Konfigurasi URL Aplikasi:
-```php
-APP_URL=http://127.0.0.1:8000
-```
-Wajib menggunakan `http://127.0.0.1:8000` untuk filament atau aplikasi tidak akan bisa jalan.  
-
-Konfigurasi Bahasa:
-```php
-APP_LOCALE=id
-APP_FALLBACK_LOCALE=id
-APP_FAKER_LOCALE=id_ID
-```
-Sesuaikan dengan `kode Negara` anda.  
-
 Konfigurasi Basis data:
 ```php
 DB_CONNECTION=mysql
