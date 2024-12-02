@@ -1,36 +1,40 @@
-#!/usr/bin/env php
 <?php
 
-$models = [];
-do {
-    echo "Masukkan Nama Model yang ingin dibuat resource: ";
-    $modelName = trim(fgets(STDIN)); // Input nama model
-    if (!empty($modelName)) {
-        $models[] = $modelName;
-    }
+// Fungsi untuk menjalankan perintah di terminal
+function runCommand($command)
+{
+    echo "Menjalankan perintah: $command\n";
+    $output = null;
+    $resultCode = null;
+    exec($command, $output, $resultCode);
 
-    echo "Apakah ada lagi? (Y/N): ";
-    $response = strtolower(trim(fgets(STDIN))); // Input pilihan Y/N
-} while ($response === 'y');
-
-if (empty($models)) {
-    echo "Tidak ada model yang ditambahkan.\n";
-    exit(0); // Keluar jika tidak ada model
-}
-
-echo "Menjalankan perintah artisan untuk membuat Filament Resource...\n";
-
-foreach ($models as $model) {
-    echo "Membuat Filament Resource: $model\n";
-    $command = "php artisan make:filament-resource $model --simple --generate --view";
-    exec($command, $output, $returnCode);
-
-    if ($returnCode === 0) {
-        echo "Berhasil membuat resource untuk $model.\n";
+    if ($resultCode === 0) {
+        echo "Perintah berhasil dijalankan.\n";
     } else {
-        echo "Gagal membuat resource untuk $model. Pesan error:\n";
+        echo "Perintah gagal dijalankan. Kode hasil: $resultCode\n";
         echo implode("\n", $output) . "\n";
     }
+}
+
+// Menjalankan perintah migrasi dan seeding
+runCommand("php artisan migrate");
+runCommand("php artisan db:seed --class=UserRolePermissionSeeder");
+runCommand("php resource.php");
+
+// Menjalankan build frontend di terminal baru (Windows)
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    runCommand("start cmd.exe /k \"npm run dev\"");
+} else {
+    // Jika di Linux/MacOS
+    runCommand("nohup npm run dev &");
+}
+
+// Menjalankan php artisan serve di terminal baru (untuk Windows)
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    runCommand("start cmd.exe /k \"php artisan serve\"");
+} else {
+    // Jika di Linux/MacOS
+    runCommand("nohup php artisan serve &");
 }
 
 echo "Semua perintah selesai dijalankan.\n";

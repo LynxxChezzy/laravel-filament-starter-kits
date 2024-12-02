@@ -46,14 +46,14 @@ npm install
 cp .env.example .env
 php artisan key:generate
 php artisan storage:link
-npm run dev
+npm run build
 ```
 `composer install` : Akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `composer.json`.  
 `npm install` : Akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `package.json`.  
 `cp .env.example .env` : Akan  menyalin file `.env.example` menjadi `.env` untuk konfigurasi aplikasi.  
 `php artisan key:generate` : Akan menghasilkan key unik untuk enkripsi data Laravel dan otomatis menambahkannya ke file `.env`.  
 `php artisan storage:link` : Akan membuat tautan antara direktori publik `public/storage` dengan penyimpanan file aplikasi `storage/app/public`.  
-`npm run dev` : Akan mengkompilasi aset secara lokal atau di environment yang terkontrol sebelum mengunggahnya ke server
+`npm run build` : Akan mengkompilasi aset secara lokal atau di environment yang terkontrol sebelum mengunggahnya ke server
 
 ### Konfigurasi `.env`
 Buka file `.env` dan sesuaikan pengaturan koneksi basis data dan lainnya sesuai dengan konfigurasi basis data yang Anda gunakan sebagai contoh:
@@ -102,22 +102,17 @@ php model.php
 ``` 
 Perintah ini akan melakukan pembuatan `Model` serta `Data Migrasi` secara otomatis sesuai data yang anda masukkan.  
 
-### Konfigurasi Resources
-Setelah melakukan pembuatan `Model` serta `Data Migrasi`, selanjutnya membuat Resource sesuai `nama model` yang udah dibuat tadi menggunakan perintah:
-```bash
-php resource.php
-```  
-Perintah ini akan melakukan pembuatan `Resource` untuk secara otomatis.  
-
 ### Migrasi Database dan Seed Data
 Setelah mengonfigurasi `.env`, `Model`, `Data Migrasi` serta `Resource`, Pada `Terminal` Baru jalankan perintah berikut untuk melakukan `migrasi Data` ke database lalu memasukkan data `User`, `Role`, dan `Permission` agar aplikasi dapat langsung digunakan:
 ```bash
 php artisan migrate
 php artisan db:seed --class=UserRolePermissionSeeder
+php resource.php
 php artisan serve
 ```
 `php artisan migrate` perintah untuk membuat `tabel` secara otomatis melalui `migrations`.  
 `php artisan db:seed --class=UserRolePermissionSeeder` perintah untuk membuat data `User`, `Role`, serta `Permission` agar aplikasi bisa diakses.  
+`php artisan resource` perintah untuk membuat Resource sesuai `nama model` yang udah dibuat tadi.  
 `php artisan serve` perintah untuk menjalankan server lokal atau aplikasi laravel.
 
 ### Akses Filament Admin Panel
