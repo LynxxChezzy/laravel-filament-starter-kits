@@ -1,12 +1,32 @@
 #!/usr/bin/env php
 <?php
 
+// Fungsi untuk menampilkan header hanya pada bagian tertentu
+function showHeader($title, $withDecoration = true)
+{
+    if ($withDecoration) {
+        echo "\n\033[36m";
+        echo str_repeat('=', 50) . "\n";
+        echo str_pad($title, 50, ' ', STR_PAD_BOTH) . "\n";
+        echo str_repeat('=', 50) . "\033[0m\n";
+    } else {
+        echo "\n\033[33m$title\033[0m\n";
+    }
+}
+
+// Fungsi untuk menampilkan pesan pembatalan dan keluar
+function abortProcess()
+{
+    echo "\n\033[31mProses dibatalkan oleh pengguna.\033[0m\n";
+    exit(0);
+}
+
 // Path ke folder models
 $modelsPath = __DIR__ . '/app/Models';
 
 // Periksa apakah folder models ada
 if (!is_dir($modelsPath)) {
-    echo "Folder 'app/Models' tidak ditemukan.\n";
+    echo "\033[31mFolder 'app/Models' tidak ditemukan.\033[0m\n";
     exit(1);
 }
 
@@ -15,7 +35,7 @@ $modelFiles = glob($modelsPath . '/*.php');
 
 // Pastikan ada file model
 if (empty($modelFiles)) {
-    echo "Tidak ada file model di folder 'app/Models'.\n";
+    echo "\033[33mTidak ada file model di folder 'app/Models'.\033[0m\n";
     exit(0);
 }
 
@@ -24,65 +44,86 @@ $models = array_map(function ($filePath) {
     return pathinfo($filePath, PATHINFO_FILENAME);
 }, $modelFiles);
 
-// Daftar model yang selalu dikecualikan (misalnya User dan Role)
+// Daftar model yang selalu dikecualikan
 $alwaysExcludedModels = ['User', 'Role'];
-
-// Gabungkan model yang selalu dikecualikan ke dalam list pengecualian
 $modelsToProcess = array_diff($models, $alwaysExcludedModels);
 
 if (empty($modelsToProcess)) {
-    echo "Tidak ada model yang tersedia untuk dibuatkan resource.\n";
+    echo "\033[33mTidak ada model yang tersedia untuk dibuatkan resource.\033[0m\n";
     exit(0);
 }
 
-echo "Model yang ditemukan: " . implode(', ', $modelsToProcess) . "\n";
+// Tanya apakah ada model yang ingin dikecualikan
+echo "\n\033[33mApakah ada model yang ingin dikecualikan? (Y/N)\033[0m ";
+$response = strtolower(trim(fgets(STDIN)));
 
-// Tanya ke user apakah ada model lain yang tidak ingin dibuatkan resource
-echo "Apakah ada model yang tidak ingin dibuatkan resource? (Y/N): ";
-$response = strtolower(trim(fgets(STDIN))); // Input pilihan Y/N
+// Periksa apakah pengguna membatalkan
+if ($response === null || feof(STDIN)) {
+    abortProcess();
+}
 
 $excludedModels = [];
 if ($response === 'y') {
-    do {
-        echo "Masukkan nama model yang tidak ingin dibuat resource: ";
-        $excludedModel = trim(fgets(STDIN));
+    // Menampilkan model yang ditemukan jika pengguna memilih 'Y'
+    showHeader('Model yang Ditemukan', true);
+    foreach ($modelsToProcess as $index => $model) {
+        echo sprintf("\033[36m[%d] %s\033[0m\n", $index + 1, $model);
+    }
 
-        if (!empty($excludedModel)) {
-            if (in_array($excludedModel, $modelsToProcess)) {
-                $excludedModels[] = $excludedModel;
-                echo "Model '$excludedModel' akan dikecualikan.\n";
-                // Pastikan model yang dikecualikan dihapus dari daftar model yang akan diproses
-                $modelsToProcess = array_diff($modelsToProcess, [$excludedModel]);
+    // Meminta pengguna untuk memilih model yang ingin dikecualikan
+    do {
+        echo "\n\033[33mMasukkan nomor model yang ingin dikecualikan  : \033[0m";
+        $excludedInput = trim(fgets(STDIN));
+
+        // Periksa apakah pengguna membatalkan
+        if ($excludedInput === null || feof(STDIN)) {
+            abortProcess();
+        }
+
+        $excludedIndexes = array_map('trim', explode(',', $excludedInput));
+        foreach ($excludedIndexes as $index) {
+            $index = (int)$index - 1; // Konversi ke indeks array
+            if (isset($modelsToProcess[$index])) {
+                $excludedModels[] = $modelsToProcess[$index];
+                unset($modelsToProcess[$index]);
             } else {
-                echo "Model '$excludedModel' tidak ditemukan di folder 'app/Models'.\n";
+                echo "\033[31mNomor '$index' tidak valid.\033[0m\n";
             }
         }
 
-        echo "Apakah ada lagi model yang ingin dikecualikan? (Y/N): ";
+        $modelsToProcess = array_values($modelsToProcess); // Reset indeks array
+        echo "\033[33mApakah ada lagi yang ingin dikecualikan? (Y/N): \033[0m";
         $response = strtolower(trim(fgets(STDIN)));
+
+        // Periksa apakah pengguna membatalkan
+        if ($response === null || feof(STDIN)) {
+            abortProcess();
+        }
     } while ($response === 'y');
 }
 
-if (empty($modelsToProcess)) {
-    echo "Semua model dikecualikan. Tidak ada resource yang akan dibuat.\n";
-    exit(0);
+if (!empty($excludedModels)) {
+    echo "\n\033[36mModel yang akan dibuat resource: \033[0m" . implode(', ', $modelsToProcess) . "\n";
 }
 
-echo "Model yang akan dibuatkan resource: " . implode(', ', $modelsToProcess) . "\n";
-echo "Menjalankan perintah artisan untuk membuat Filament Resource...\n";
 
-// Jalankan artisan untuk setiap model yang tidak dikecualikan
+// Konfirmasi sebelum eksekusi
+echo "\n\033[33mLanjutkan proses pembuatan resource? (Y/N)\033[0m ";
+$response = strtolower(trim(fgets(STDIN)));
+
+if ($response !== 'y') {
+    abortProcess();
+}
+
+// Proses pembuatan resource tanpa pertanyaan konfirmasi tambahan
 foreach ($modelsToProcess as $model) {
-    echo "Membuat Filament Resource: $model\n";
     $command = "php artisan make:filament-resource $model --simple --generate --view";
     exec($command, $output, $returnCode);
 
-    if ($returnCode === 0) {
-        echo "Berhasil membuat resource untuk $model.\n";
-    } else {
-        echo "Gagal membuat resource untuk $model. Pesan error:\n";
+    if ($returnCode !== 0) {
+        echo "\033[31mGagal membuat resource untuk $model. Pesan error:\033[0m\n";
         echo implode("\n", $output) . "\n";
     }
 }
 
-echo "Semua perintah selesai dijalankan.\n";
+echo "\033[32mSemua resource berhasil dibuat.\033[0m\n";

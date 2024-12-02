@@ -1,42 +1,74 @@
 #!/usr/bin/env php
 <?php
 
+// Fungsi untuk menampilkan header
+function showHeader($title)
+{
+    echo "\n\033[36m";
+    echo str_repeat('=', 50) . "\n";
+    echo str_pad($title, 50, ' ', STR_PAD_BOTH) . "\n";
+    echo str_repeat('=', 50) . "\033[0m\n";
+}
+
+// Fungsi untuk membatalkan proses dengan pesan error
+function abortProcess($message)
+{
+    echo "\n\033[31m$message\033[0m\n";
+    exit(0); // Keluar dari script
+}
+
 $models = [];
 
 do {
     // Input nama model
-    echo "Masukkan nama model yang ingin Anda buat: ";
+    echo "\n\033[1;36mMasukkan nama model yang ingin Anda buat: \033[0m";
     $modelName = trim(fgets(STDIN));
 
+    // Jika ada input model
     if (!empty($modelName)) {
         if (!in_array($modelName, $models)) {
-            $models[] = $modelName; // Tambahkan ke array jika belum ada
+            $models[] = $modelName;
         } else {
-            echo "Model '$modelName' sudah ditambahkan.\n";
+            echo "\033[31mModel '$modelName' sudah ada.\033[0m\n";
         }
     }
 
-    // Tanya apakah ada model lain
-    echo "Apakah ada lagi? (y/n): ";
-    $response = strtolower(trim(fgets(STDIN)));
+    // Cek apakah ingin menambahkan model lagi
+    if (!empty($modelName)) {
+        echo "\033[33mApakah ada lagi? (Y/N): \033[0m";
+        $response = strtolower(trim(fgets(STDIN)));
+    } else {
+        // Jika tidak ada model yang dimasukkan, keluar dari loop
+        break;
+    }
 } while ($response === 'y');
 
+// Pengecekan jika tidak ada model yang ditambahkan
 if (empty($models)) {
-    echo "Tidak ada model yang ditambahkan.\n";
-    exit(0); // Keluar dari script jika tidak ada model
+    abortProcess("Tidak ada model yang ditambahkan. Keluar dari script...");
 }
 
-echo "Menjalankan perintah artisan untuk membuat model dan migration...\n";
+// Menampilkan header dan konfirmasi model
+showHeader("Konfirmasi Model yang Akan Dibuat");
+echo "Model yang akan dibuat:\n";
+foreach ($models as $model) {
+    echo "\033[36m- $model\033[0m\n";
+}
+
+echo "\n\033[33mApakah Anda ingin melanjutkan pembuatan model ini? (Y/N): \033[0m";
+$response = strtolower(trim(fgets(STDIN)));
+
+if ($response !== 'y') {
+    abortProcess("Proses dibatalkan.");
+}
 
 foreach ($models as $model) {
-    echo "Membuat model: $model\n";
+    echo "\n\033[1;36mMembuat model: \033[0m$model\n";
 
     // Jalankan perintah artisan
     exec("php artisan make:model $model -m", $output, $returnCode);
 
     if ($returnCode === 0) {
-        echo "Berhasil membuat model $model.\n";
-
         // Path ke file model yang baru saja dibuat
         $modelFilePath = __DIR__ . "/app/Models/$model.php";
 
@@ -47,10 +79,9 @@ foreach ($models as $model) {
 
             // Tulis ulang isi file model dengan template di atas
             file_put_contents($modelFilePath, $modelContent);
-            echo "File model $model berhasil diubah dengan template yang diinginkan.\n";
         }
     } else {
-        echo "Gagal membuat model $model. Pesan error:\n";
+        echo "\033[31mGagal membuat model $model. Pesan error:\n\033[0m";
         echo implode("\n", $output) . "\n";
     }
 
@@ -58,4 +89,8 @@ foreach ($models as $model) {
     $output = [];
 }
 
-echo "Semua perintah selesai dijalankan.\n";
+// Gabungkan nama model yang berhasil dibuat menjadi satu string yang dipisahkan koma
+$modelsList = implode(', ', $models);
+
+// Menampilkan nama model yang berhasil dibuat dengan warna cyan
+echo "\n\033[32mModel ($modelsList) Berhasil Dibuat.\033[0m\n";
