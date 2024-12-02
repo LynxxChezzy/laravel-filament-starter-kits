@@ -46,12 +46,14 @@ npm install
 cp .env.example .env
 php artisan key:generate
 php artisan storage:link
+npm run dev
 ```
 `composer install` : Akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `composer.json`.  
 `npm install` : Akan mengunduh dan menginstal semua dependensi yang tercantum di dalam file `package.json`.  
 `cp .env.example .env` : Akan  menyalin file `.env.example` menjadi `.env` untuk konfigurasi aplikasi.  
 `php artisan key:generate` : Akan menghasilkan key unik untuk enkripsi data Laravel dan otomatis menambahkannya ke file `.env`.  
 `php artisan storage:link` : Akan membuat tautan antara direktori publik `public/storage` dengan penyimpanan file aplikasi `storage/app/public`.  
+`npm run dev` : Akan mengkompilasi aset secara lokal atau di environment yang terkontrol sebelum mengunggahnya ke server
 
 ### Konfigurasi `.env`
 Buka file `.env` dan sesuaikan pengaturan koneksi basis data dan lainnya sesuai dengan konfigurasi basis data yang Anda gunakan sebagai contoh:
@@ -93,8 +95,22 @@ DB_PASSWORD=
 ```
 Pada bagian `DB_DATABASE` sesuaikan dengan `nama database` yang ingin anda buat.  
 
+### Konfigurasi Model dan Data Migrasi
+Sebelum melakukan `Migrasi Data` konfigurasi data Model dan Migrations menggunakan perintah berikut:
+```bash
+php model.php
+``` 
+Perintah ini akan melakukan pembuatan `Model` serta `Data Migrasi` secara otomatis sesuai data yang anda masukkan.  
+
+### Konfigurasi Resources
+Setelah melakukan pembuatan `Model` serta `Data Migrasi`, selanjutnya membuat Resource sesuai `nama model` yang udah dibuat tadi menggunakan perintah:
+```bash
+php resource.php
+```  
+Perintah ini akan melakukan pembuatan `Resource` untuk secara otomatis.  
+
 ### Migrasi Database dan Seed Data
-Setelah mengonfigurasi `.env` serta basis data, jalankan perintah berikut untuk membuat `tabel`, lalu memasukkan data `User`, `Role`, dan `Permission` agar aplikasi dapat langsung digunakan:
+Setelah mengonfigurasi `.env`, `Model`, `Data Migrasi` serta `Resource`, Pada `Terminal` Baru jalankan perintah berikut untuk melakukan `migrasi Data` ke database lalu memasukkan data `User`, `Role`, dan `Permission` agar aplikasi dapat langsung digunakan:
 ```bash
 php artisan migrate
 php artisan db:seed --class=UserRolePermissionSeeder
