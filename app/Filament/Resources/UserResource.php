@@ -96,8 +96,8 @@ class UserResource extends Resource
                             ? asset('storage/' . $record->avatar_url)
                             : 'https://ui-avatars.com/api/?name=' . $initials . '&amp;color=FFFFFF&amp;background=030712';
                         $image = '<img class="w-10 h-10 rounded-lg mr-2.5" src="' . $avatarUrl . '" alt="Avatar User">';
-                        $nama = '<strong class="text-sm text-gray-800 font-medium">' . e($record->name) . '</strong>';
-                        $email = '<span class="text-gray-300 font-light">' . e($record->email) . '</span>';
+                        $nama = '<strong class="text-sm font-medium text-gray-800">' . e($record->name) . '</strong>';
+                        $email = '<span class="font-light text-gray-300">' . e($record->email) . '</span>';
                         return '<div class="flex items-center">'
                             . $image
                             . '<div>' . $nama . '<br>' . $email . '</div></div>';
