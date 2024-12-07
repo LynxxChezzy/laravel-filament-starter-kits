@@ -4,7 +4,7 @@ return [
 
     'title' => 'Masuk',
 
-    'heading' => 'Masuk ke akun Anda',
+    'heading' => 'Masuk',
 
     'actions' => [
 
@@ -23,10 +23,12 @@ return [
 
         'email' => [
             'label' => 'Alamat email',
+            'placeholder' => 'Masukkan Email'
         ],
 
         'password' => [
             'label' => 'Kata sandi',
+            'placeholder' => 'Masukkan Kata Sandi'
         ],
 
         'remember' => [

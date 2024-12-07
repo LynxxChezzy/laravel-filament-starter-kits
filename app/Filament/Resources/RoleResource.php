@@ -28,7 +28,17 @@ class RoleResource extends Resource
     protected static ?string $label = 'Level Pengguna';
     protected static ?string $navigationGroup = 'Kelola Pengguna';
     protected static ?string $navigationIcon = 'heroicon-o-identification';
-
+    protected static ?string $activeNavigationIcon = 'heroicon-s-identification';
+    protected static ?int $navigationSort = 19;
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() < 2 ? 'danger' : 'info';
+    }
+    protected static ?string $navigationBadgeTooltip = 'Total Level Pengguna';
     public static function form(Form $form): Form
     {
         return $form
@@ -37,6 +47,7 @@ class RoleResource extends Resource
                     ->label('Nama Level')
                     ->placeholder('Masukkan Nama Level Pengguna')
                     ->required()
+                    ->autofocus()
                     ->minLength(3)
                     ->maxLength(255),
             ]);

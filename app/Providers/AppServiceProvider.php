@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Filament\Resources\RoleResource;
+use App\Filament\Resources\UserResource;
 use Filament\Facades\Filament;
+use Filament\Pages\Dashboard;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Auth\AuthenticationException;
@@ -35,16 +38,26 @@ class AppServiceProvider extends ServiceProvider
             fn(): string => Filament::getLoginUrl()
         );
 
+        // Navigation Top User Card
         FilamentView::registerRenderHook(
             PanelsRenderHook::SIDEBAR_NAV_START,
             fn(): View => view('filament.user-card')
         );
 
+        // Footer
         FilamentView::registerRenderHook(
             PanelsRenderHook::FOOTER,
-            fn(): View => view('filament.footer')
+            fn(): View => view('filament.footer'),
+            // Render The Footer for Pages or Resource
+            scopes: [
+                Dashboard::class,
+                UserResource::class,
+                RoleResource::class,
+            ]
+
         );
 
+        // Vite Hot Reloading
         FilamentView::registerRenderHook(
             PanelsRenderHook::BODY_END,
             fn(): string => Blade::render("@vite('resources/js/app.js')")

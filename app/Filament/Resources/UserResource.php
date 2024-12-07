@@ -29,6 +29,17 @@ class UserResource extends Resource
     protected static ?string $label = 'Pengguna';
     protected static ?string $navigationGroup = 'Kelola Pengguna';
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $activeNavigationIcon = 'heroicon-s-user-group';
+    protected static ?int $navigationSort = 20;
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() < 2 ? 'danger' : 'info';
+    }
+    protected static ?string $navigationBadgeTooltip = 'Total Pengguna';
 
     public static function form(Form $form): Form
     {
@@ -68,7 +79,7 @@ class UserResource extends Resource
                     ->required(),
 
                 FileUpload::make('avatar_url')
-                    ->label('Photo Profil')
+                    ->label('Foto Profil')
                     ->image()
                     ->imageEditor()
                     ->imageEditorAspectRatios([
