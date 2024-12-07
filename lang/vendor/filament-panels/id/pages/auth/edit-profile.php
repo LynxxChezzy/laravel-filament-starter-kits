@@ -2,7 +2,7 @@
 
 return [
 
-    'label' => 'Profil',
+    'label' => 'Ubah Profil',
 
     'form' => [
 
