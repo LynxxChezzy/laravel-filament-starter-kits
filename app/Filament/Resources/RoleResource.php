@@ -50,6 +50,7 @@ class RoleResource extends Resource
                     ->maxLength(255)
                     ->columnSpanFull()
                     ->autofocus()
+                    ->inlineLabel()
                     ->required(),
             ]);
     }
