@@ -46,10 +46,11 @@ class RoleResource extends Resource
                 TextInput::make('name')
                     ->label('Nama Level')
                     ->placeholder('Masukkan Nama Level Pengguna')
-                    ->required()
-                    ->autofocus()
                     ->minLength(3)
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->columnSpanFull()
+                    ->autofocus()
+                    ->required(),
             ]);
     }
 
