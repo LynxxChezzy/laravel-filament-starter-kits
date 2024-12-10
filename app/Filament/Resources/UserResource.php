@@ -18,6 +18,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -96,7 +97,7 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label('Pengguna')
                     ->formatStateUsing(function (User $record) {
                         $nameParts = explode(' ', trim($record->name));
@@ -138,7 +139,7 @@ class UserResource extends Resource
                         })
                         ->requiresConfirmation(),
                 ])
-                    ->icon('heroicon-m-ellipsis-horizontal')
+                    ->icon('heroicon-o-ellipsis-horizontal-circle')
                     ->color('info')
                     ->tooltip('Aksi')
             ])
