@@ -85,7 +85,8 @@ class RoleResource extends Resource
                             $record->delete(); // Lanjutkan penghapusan role jika bukan role yang sedang login
                         })
                         ->requiresConfirmation(),
-                ])->icon('heroicon-m-ellipsis-horizontal')
+                ])
+                    ->icon('heroicon-o-ellipsis-horizontal-circle')
                     ->color('info')
                     ->tooltip('Aksi')
             ])
