@@ -75,7 +75,7 @@ foreach ($models as $model) {
         // Pastikan file model ada
         if (file_exists($modelFilePath)) {
             // Isi template untuk model
-            $modelContent = "<?php\n\nnamespace App\Models;\n\nuse Illuminate\Database\Eloquent\Factories\HasFactory;\nuse Illuminate\Database\Eloquent\Model;\n\nclass $model extends Model\n{\n    use HasFactory;\n\n    protected \$fillable = [\n        'nama',\n    ];\n}\n";
+            $modelContent = "<?php\n\nnamespace App\Models;\n\nuse Illuminate\Database\Eloquent\Factories\HasFactory;\nuse Illuminate\Database\Eloquent\Model;\n\nclass $model extends Model\n{\n    use HasFactory;\n\n    protected \$fillable = [\n        'nama',\n    ];\n}";
 
             // Tulis ulang isi file model dengan template di atas
             file_put_contents($modelFilePath, $modelContent);
@@ -87,6 +87,9 @@ foreach ($models as $model) {
 
     // Bersihkan output buffer untuk perintah berikutnya
     $output = [];
+
+    // Delay 0,5 detik
+    usleep(700000); // 500,000 mikrodetik = 0,5 detik
 }
 
 // Gabungkan nama model yang berhasil dibuat menjadi satu string yang dipisahkan koma
